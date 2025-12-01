@@ -1,0 +1,187 @@
+INFO 12-01 12:01:39 [scheduler.py:216] Chunked prefill is enabled with max_num_batched_tokens=2048.
+[1;36m(APIServer pid=2796722)[0;0m INFO 12-01 12:01:39 [api_server.py:1977] vLLM API server version 0.11.2
+[1;36m(APIServer pid=2796722)[0;0m INFO 12-01 12:01:39 [utils.py:253] non-default args: {'model_tag': '/home/naresh/models/qwen3-vl-235b-thinking-fp8', 'host': '0.0.0.0', 'port': 8010, 'model': '/home/naresh/models/qwen3-vl-235b-thinking-fp8', 'trust_remote_code': True, 'max_model_len': 32768, 'tensor_parallel_size': 8, 'enable_expert_parallel': True, 'max_num_seqs': 2}
+[1;36m(APIServer pid=2796722)[0;0m The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+[1;36m(APIServer pid=2796722)[0;0m INFO 12-01 12:01:39 [model.py:631] Resolved architecture: Qwen3VLMoeForConditionalGeneration
+[1;36m(APIServer pid=2796722)[0;0m INFO 12-01 12:01:39 [model.py:1745] Using max model len 32768
+[1;36m(APIServer pid=2796722)[0;0m INFO 12-01 12:01:40 [scheduler.py:216] Chunked prefill is enabled with max_num_batched_tokens=8192.
+[1;36m(EngineCore_DP0 pid=2796837)[0;0m INFO 12-01 12:01:50 [core.py:93] Initializing a V1 LLM engine (v0.11.2) with config: model='/home/naresh/models/qwen3-vl-235b-thinking-fp8', speculative_config=None, tokenizer='/home/naresh/models/qwen3-vl-235b-thinking-fp8', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=32768, download_dir=None, load_format=auto, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, disable_custom_all_reduce=False, quantization=fp8, enforce_eager=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_fallback=False, disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None), seed=0, served_model_name=/home/naresh/models/qwen3-vl-235b-thinking-fp8, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'level': None, 'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none', '+quant_fp8'], 'splitting_ops': ['vllm::unified_attention', 'vllm::unified_attention_with_output', 'vllm::unified_mla_attention', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::gdn_attention_core', 'vllm::kda_attention', 'vllm::sparse_attn_indexer'], 'compile_mm_encoder': False, 'use_inductor': None, 'compile_sizes': [], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {}, 'max_cudagraph_capture_size': 4, 'local_cache_dir': None}
+[1;36m(EngineCore_DP0 pid=2796837)[0;0m WARNING 12-01 12:01:50 [multiproc_executor.py:869] Reducing Torch parallelism from 16 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 12-01 12:02:06 [parallel_state.py:1208] world_size=8 rank=1 local_rank=1 distributed_init_method=tcp://127.0.0.1:55917 backend=nccl
+INFO 12-01 12:02:06 [parallel_state.py:1208] world_size=8 rank=2 local_rank=2 distributed_init_method=tcp://127.0.0.1:55917 backend=nccl
+INFO 12-01 12:02:06 [parallel_state.py:1208] world_size=8 rank=7 local_rank=7 distributed_init_method=tcp://127.0.0.1:55917 backend=nccl
+INFO 12-01 12:02:06 [parallel_state.py:1208] world_size=8 rank=4 local_rank=4 distributed_init_method=tcp://127.0.0.1:55917 backend=nccl
+INFO 12-01 12:02:06 [parallel_state.py:1208] world_size=8 rank=6 local_rank=6 distributed_init_method=tcp://127.0.0.1:55917 backend=nccl
+INFO 12-01 12:02:06 [parallel_state.py:1208] world_size=8 rank=5 local_rank=5 distributed_init_method=tcp://127.0.0.1:55917 backend=nccl
+INFO 12-01 12:02:06 [parallel_state.py:1208] world_size=8 rank=3 local_rank=3 distributed_init_method=tcp://127.0.0.1:55917 backend=nccl
+INFO 12-01 12:02:06 [parallel_state.py:1208] world_size=8 rank=0 local_rank=0 distributed_init_method=tcp://127.0.0.1:55917 backend=nccl
+[Gloo] Rank 6 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 2 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 0 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 1 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 4 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 3 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 5 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 7 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 4 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 0 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 5 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 1 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 2 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 3 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 7 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 6 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+INFO 12-01 12:02:07 [pynccl.py:111] vLLM is using nccl==2.27.5
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+[Gloo] Rank 4 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 5 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 0 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 1 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 2 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 6 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 3 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 7 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+INFO 12-01 12:02:10 [parallel_state.py:1394] rank 4 in world size 8 is assigned as DP rank 0, PP rank 0, TP rank 4, EP rank 4
+INFO 12-01 12:02:10 [parallel_state.py:1394] rank 1 in world size 8 is assigned as DP rank 0, PP rank 0, TP rank 1, EP rank 1
+INFO 12-01 12:02:10 [parallel_state.py:1394] rank 5 in world size 8 is assigned as DP rank 0, PP rank 0, TP rank 5, EP rank 5
+INFO 12-01 12:02:10 [parallel_state.py:1394] rank 2 in world size 8 is assigned as DP rank 0, PP rank 0, TP rank 2, EP rank 2
+INFO 12-01 12:02:10 [parallel_state.py:1394] rank 6 in world size 8 is assigned as DP rank 0, PP rank 0, TP rank 6, EP rank 6
+INFO 12-01 12:02:10 [parallel_state.py:1394] rank 3 in world size 8 is assigned as DP rank 0, PP rank 0, TP rank 3, EP rank 3
+INFO 12-01 12:02:10 [parallel_state.py:1394] rank 0 in world size 8 is assigned as DP rank 0, PP rank 0, TP rank 0, EP rank 0
+INFO 12-01 12:02:10 [parallel_state.py:1394] rank 7 in world size 8 is assigned as DP rank 0, PP rank 0, TP rank 7, EP rank 7
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:02:14 [gpu_model_runner.py:3259] Starting to load model /home/naresh/models/qwen3-vl-235b-thinking-fp8...
+[1;36m(Worker_TP5_EP5 pid=2796920)[0;0m INFO 12-01 12:02:14 [cuda.py:418] Valid backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']
+[1;36m(Worker_TP3_EP3 pid=2796918)[0;0m INFO 12-01 12:02:14 [cuda.py:418] Valid backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']
+[1;36m(Worker_TP5_EP5 pid=2796920)[0;0m INFO 12-01 12:02:14 [cuda.py:427] Using FLASH_ATTN backend.
+[1;36m(Worker_TP3_EP3 pid=2796918)[0;0m INFO 12-01 12:02:14 [cuda.py:427] Using FLASH_ATTN backend.
+[1;36m(Worker_TP5_EP5 pid=2796920)[0;0m INFO 12-01 12:02:14 [layer.py:342] Enabled separate cuda stream for MoE shared_experts
+[1;36m(Worker_TP3_EP3 pid=2796918)[0;0m INFO 12-01 12:02:14 [layer.py:342] Enabled separate cuda stream for MoE shared_experts
+[1;36m(Worker_TP3_EP3 pid=2796918)[0;0m INFO 12-01 12:02:14 [layer.py:468] [EP Rank 3/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 16/128. Experts local to global index map: 0->48, 1->49, 2->50, 3->51, 4->52, 5->53, 6->54, 7->55, 8->56, 9->57, 10->58, 11->59, 12->60, 13->61, 14->62, 15->63.
+[1;36m(Worker_TP3_EP3 pid=2796918)[0;0m WARNING 12-01 12:02:14 [fp8.py:165] DeepGEMM backend requested but not available.
+[1;36m(Worker_TP3_EP3 pid=2796918)[0;0m INFO 12-01 12:02:14 [fp8.py:180] Using Triton backend for FP8 MoE
+[1;36m(Worker_TP5_EP5 pid=2796920)[0;0m INFO 12-01 12:02:14 [layer.py:468] [EP Rank 5/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 16/128. Experts local to global index map: 0->80, 1->81, 2->82, 3->83, 4->84, 5->85, 6->86, 7->87, 8->88, 9->89, 10->90, 11->91, 12->92, 13->93, 14->94, 15->95.
+[1;36m(Worker_TP5_EP5 pid=2796920)[0;0m WARNING 12-01 12:02:14 [fp8.py:165] DeepGEMM backend requested but not available.
+[1;36m(Worker_TP5_EP5 pid=2796920)[0;0m INFO 12-01 12:02:14 [fp8.py:180] Using Triton backend for FP8 MoE
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m INFO 12-01 12:02:14 [cuda.py:418] Valid backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m INFO 12-01 12:02:14 [cuda.py:427] Using FLASH_ATTN backend.
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m INFO 12-01 12:02:14 [layer.py:342] Enabled separate cuda stream for MoE shared_experts
+[1;36m(Worker_TP4_EP4 pid=2796919)[0;0m INFO 12-01 12:02:14 [cuda.py:418] Valid backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']
+[1;36m(Worker_TP4_EP4 pid=2796919)[0;0m INFO 12-01 12:02:14 [cuda.py:427] Using FLASH_ATTN backend.
+[1;36m(Worker_TP4_EP4 pid=2796919)[0;0m INFO 12-01 12:02:14 [layer.py:342] Enabled separate cuda stream for MoE shared_experts
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:02:14 [cuda.py:418] Valid backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:02:14 [cuda.py:427] Using FLASH_ATTN backend.
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:02:14 [layer.py:342] Enabled separate cuda stream for MoE shared_experts
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m INFO 12-01 12:02:14 [layer.py:468] [EP Rank 1/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 16/128. Experts local to global index map: 0->16, 1->17, 2->18, 3->19, 4->20, 5->21, 6->22, 7->23, 8->24, 9->25, 10->26, 11->27, 12->28, 13->29, 14->30, 15->31.
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m WARNING 12-01 12:02:14 [fp8.py:165] DeepGEMM backend requested but not available.
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m INFO 12-01 12:02:14 [fp8.py:180] Using Triton backend for FP8 MoE
+[1;36m(Worker_TP4_EP4 pid=2796919)[0;0m INFO 12-01 12:02:14 [layer.py:468] [EP Rank 4/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 16/128. Experts local to global index map: 0->64, 1->65, 2->66, 3->67, 4->68, 5->69, 6->70, 7->71, 8->72, 9->73, 10->74, 11->75, 12->76, 13->77, 14->78, 15->79.
+[1;36m(Worker_TP4_EP4 pid=2796919)[0;0m WARNING 12-01 12:02:14 [fp8.py:165] DeepGEMM backend requested but not available.
+[1;36m(Worker_TP4_EP4 pid=2796919)[0;0m INFO 12-01 12:02:14 [fp8.py:180] Using Triton backend for FP8 MoE
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:02:14 [layer.py:468] [EP Rank 0/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 16/128. Experts local to global index map: 0->0, 1->1, 2->2, 3->3, 4->4, 5->5, 6->6, 7->7, 8->8, 9->9, 10->10, 11->11, 12->12, 13->13, 14->14, 15->15.
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m WARNING 12-01 12:02:14 [fp8.py:165] DeepGEMM backend requested but not available.
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:02:14 [fp8.py:180] Using Triton backend for FP8 MoE
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m INFO 12-01 12:02:14 [cuda.py:418] Valid backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m INFO 12-01 12:02:14 [cuda.py:427] Using FLASH_ATTN backend.
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m INFO 12-01 12:02:14 [layer.py:342] Enabled separate cuda stream for MoE shared_experts
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m INFO 12-01 12:02:14 [layer.py:468] [EP Rank 6/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 16/128. Experts local to global index map: 0->96, 1->97, 2->98, 3->99, 4->100, 5->101, 6->102, 7->103, 8->104, 9->105, 10->106, 11->107, 12->108, 13->109, 14->110, 15->111.
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m WARNING 12-01 12:02:14 [fp8.py:165] DeepGEMM backend requested but not available.
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m INFO 12-01 12:02:14 [fp8.py:180] Using Triton backend for FP8 MoE
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m INFO 12-01 12:02:14 [cuda.py:418] Valid backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m INFO 12-01 12:02:14 [cuda.py:427] Using FLASH_ATTN backend.
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m INFO 12-01 12:02:14 [layer.py:342] Enabled separate cuda stream for MoE shared_experts
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m INFO 12-01 12:02:14 [layer.py:468] [EP Rank 7/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 16/128. Experts local to global index map: 0->112, 1->113, 2->114, 3->115, 4->116, 5->117, 6->118, 7->119, 8->120, 9->121, 10->122, 11->123, 12->124, 13->125, 14->126, 15->127.
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m WARNING 12-01 12:02:14 [fp8.py:165] DeepGEMM backend requested but not available.
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m INFO 12-01 12:02:14 [fp8.py:180] Using Triton backend for FP8 MoE
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m INFO 12-01 12:02:15 [cuda.py:418] Valid backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m INFO 12-01 12:02:15 [cuda.py:427] Using FLASH_ATTN backend.
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m INFO 12-01 12:02:15 [layer.py:342] Enabled separate cuda stream for MoE shared_experts
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m INFO 12-01 12:02:15 [layer.py:468] [EP Rank 2/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 16/128. Experts local to global index map: 0->32, 1->33, 2->34, 3->35, 4->36, 5->37, 6->38, 7->39, 8->40, 9->41, 10->42, 11->43, 12->44, 13->45, 14->46, 15->47.
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m WARNING 12-01 12:02:15 [fp8.py:165] DeepGEMM backend requested but not available.
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m INFO 12-01 12:02:15 [fp8.py:180] Using Triton backend for FP8 MoE
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:   0% Completed | 0/24 [00:00<?, ?it/s]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:   4% Completed | 1/24 [00:04<01:34,  4.12s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:   8% Completed | 2/24 [00:09<01:42,  4.67s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  12% Completed | 3/24 [00:14<01:41,  4.85s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  17% Completed | 4/24 [00:19<01:38,  4.93s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  21% Completed | 5/24 [00:26<01:51,  5.88s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  25% Completed | 6/24 [00:31<01:39,  5.54s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  29% Completed | 7/24 [00:36<01:30,  5.32s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  33% Completed | 8/24 [00:41<01:22,  5.15s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  38% Completed | 9/24 [00:46<01:15,  5.02s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  42% Completed | 10/24 [00:50<01:09,  4.94s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  46% Completed | 11/24 [00:55<01:03,  4.89s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  50% Completed | 12/24 [01:00<00:58,  4.85s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  54% Completed | 13/24 [01:05<00:52,  4.81s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  58% Completed | 14/24 [01:09<00:47,  4.79s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  62% Completed | 15/24 [01:14<00:43,  4.79s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  67% Completed | 16/24 [01:19<00:38,  4.79s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  71% Completed | 17/24 [01:24<00:33,  4.78s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  75% Completed | 18/24 [01:28<00:28,  4.76s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  79% Completed | 19/24 [01:33<00:23,  4.75s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  83% Completed | 20/24 [01:38<00:18,  4.75s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  88% Completed | 21/24 [01:43<00:14,  4.74s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  92% Completed | 22/24 [01:47<00:09,  4.75s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards:  96% Completed | 23/24 [01:52<00:04,  4.74s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards: 100% Completed | 24/24 [01:56<00:00,  4.36s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m Loading safetensors checkpoint shards: 100% Completed | 24/24 [01:56<00:00,  4.84s/it]
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m 
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:04:11 [default_loader.py:314] Loading weights took 116.14 seconds
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:04:11 [gpu_model_runner.py:3338] Model loading took 28.2359 GiB memory and 117.070017 seconds
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m INFO 12-01 12:04:26 [gpu_model_runner.py:4088] Encoder cache will be initialized with a budget of 153600 tokens, and profiled with 1 video items of the maximum feature size.
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m INFO 12-01 12:04:26 [gpu_model_runner.py:4088] Encoder cache will be initialized with a budget of 153600 tokens, and profiled with 1 video items of the maximum feature size.
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m INFO 12-01 12:04:26 [gpu_model_runner.py:4088] Encoder cache will be initialized with a budget of 153600 tokens, and profiled with 1 video items of the maximum feature size.
+[1;36m(Worker_TP3_EP3 pid=2796918)[0;0m INFO 12-01 12:04:26 [gpu_model_runner.py:4088] Encoder cache will be initialized with a budget of 153600 tokens, and profiled with 1 video items of the maximum feature size.
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m INFO 12-01 12:04:26 [gpu_model_runner.py:4088] Encoder cache will be initialized with a budget of 153600 tokens, and profiled with 1 video items of the maximum feature size.
+[1;36m(Worker_TP4_EP4 pid=2796919)[0;0m INFO 12-01 12:04:26 [gpu_model_runner.py:4088] Encoder cache will be initialized with a budget of 153600 tokens, and profiled with 1 video items of the maximum feature size.
+[1;36m(Worker_TP5_EP5 pid=2796920)[0;0m INFO 12-01 12:04:27 [gpu_model_runner.py:4088] Encoder cache will be initialized with a budget of 153600 tokens, and profiled with 1 video items of the maximum feature size.
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:04:27 [gpu_model_runner.py:4088] Encoder cache will be initialized with a budget of 153600 tokens, and profiled with 1 video items of the maximum feature size.
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m /home/naresh/venvs/qwen3-vl-fp8-service/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py:1692: UserWarning: Dynamo detected a call to a `functools.lru_cache`-wrapped function. Dynamo ignores the cache wrapper and directly traces the wrapped function. Silent incorrectness is only a *potential* risk, not something we have observed. Enable TORCH_LOGS="+dynamo" for a DEBUG stack trace.
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m   torch._dynamo.utils.warn_once(msg)
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m /home/naresh/venvs/qwen3-vl-fp8-service/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py:1692: UserWarning: Dynamo detected a call to a `functools.lru_cache`-wrapped function. Dynamo ignores the cache wrapper and directly traces the wrapped function. Silent incorrectness is only a *potential* risk, not something we have observed. Enable TORCH_LOGS="+dynamo" for a DEBUG stack trace.
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m   torch._dynamo.utils.warn_once(msg)
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m /home/naresh/venvs/qwen3-vl-fp8-service/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py:1692: UserWarning: Dynamo detected a call to a `functools.lru_cache`-wrapped function. Dynamo ignores the cache wrapper and directly traces the wrapped function. Silent incorrectness is only a *potential* risk, not something we have observed. Enable TORCH_LOGS="+dynamo" for a DEBUG stack trace.
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m   torch._dynamo.utils.warn_once(msg)
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m /home/naresh/venvs/qwen3-vl-fp8-service/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py:1692: UserWarning: Dynamo detected a call to a `functools.lru_cache`-wrapped function. Dynamo ignores the cache wrapper and directly traces the wrapped function. Silent incorrectness is only a *potential* risk, not something we have observed. Enable TORCH_LOGS="+dynamo" for a DEBUG stack trace.
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m   torch._dynamo.utils.warn_once(msg)
+[1;36m(Worker_TP3_EP3 pid=2796918)[0;0m /home/naresh/venvs/qwen3-vl-fp8-service/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py:1692: UserWarning: Dynamo detected a call to a `functools.lru_cache`-wrapped function. Dynamo ignores the cache wrapper and directly traces the wrapped function. Silent incorrectness is only a *potential* risk, not something we have observed. Enable TORCH_LOGS="+dynamo" for a DEBUG stack trace.
+[1;36m(Worker_TP3_EP3 pid=2796918)[0;0m   torch._dynamo.utils.warn_once(msg)
+[1;36m(Worker_TP4_EP4 pid=2796919)[0;0m /home/naresh/venvs/qwen3-vl-fp8-service/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py:1692: UserWarning: Dynamo detected a call to a `functools.lru_cache`-wrapped function. Dynamo ignores the cache wrapper and directly traces the wrapped function. Silent incorrectness is only a *potential* risk, not something we have observed. Enable TORCH_LOGS="+dynamo" for a DEBUG stack trace.
+[1;36m(Worker_TP4_EP4 pid=2796919)[0;0m   torch._dynamo.utils.warn_once(msg)
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m /home/naresh/venvs/qwen3-vl-fp8-service/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py:1692: UserWarning: Dynamo detected a call to a `functools.lru_cache`-wrapped function. Dynamo ignores the cache wrapper and directly traces the wrapped function. Silent incorrectness is only a *potential* risk, not something we have observed. Enable TORCH_LOGS="+dynamo" for a DEBUG stack trace.
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m   torch._dynamo.utils.warn_once(msg)
+[1;36m(Worker_TP5_EP5 pid=2796920)[0;0m /home/naresh/venvs/qwen3-vl-fp8-service/lib/python3.10/site-packages/torch/_dynamo/variables/functions.py:1692: UserWarning: Dynamo detected a call to a `functools.lru_cache`-wrapped function. Dynamo ignores the cache wrapper and directly traces the wrapped function. Silent incorrectness is only a *potential* risk, not something we have observed. Enable TORCH_LOGS="+dynamo" for a DEBUG stack trace.
+[1;36m(Worker_TP5_EP5 pid=2796920)[0;0m   torch._dynamo.utils.warn_once(msg)
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:04:57 [backends.py:631] Using cache directory: /home/naresh/.cache/vllm/torch_compile_cache/991ec0477e/rank_0_0/backbone for vLLM's torch.compile
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m INFO 12-01 12:04:57 [backends.py:647] Dynamo bytecode transform time: 21.98 s
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m [rank7]:W1201 12:04:59.935000 2796922 torch/_inductor/codegen/triton_combo_kernel.py:97] [0/0] ComboKernels: 1 long reduction nodes are separated
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m [rank6]:W1201 12:04:59.950000 2796921 torch/_inductor/codegen/triton_combo_kernel.py:97] [0/0] ComboKernels: 1 long reduction nodes are separated
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m [rank0]:W1201 12:05:00.012000 2796915 torch/_inductor/codegen/triton_combo_kernel.py:97] [0/0] ComboKernels: 1 long reduction nodes are separated
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m [rank2]:W1201 12:05:00.123000 2796917 torch/_inductor/codegen/triton_combo_kernel.py:97] [0/0] ComboKernels: 1 long reduction nodes are separated
+[1;36m(Worker_TP1_EP1 pid=2796916)[0;0m [rank1]:W1201 12:05:01.721000 2796916 torch/_inductor/codegen/triton_combo_kernel.py:97] [0/0] ComboKernels: 1 long reduction nodes are separated
+[1;36m(Worker_TP0_EP0 pid=2796915)[0;0m [rank0]:W1201 12:05:02.724000 2796915 torch/_inductor/codegen/triton_combo_kernel.py:97] [0/0] ComboKernels: 1 long reduction nodes are separated
+[1;36m(Worker_TP2_EP2 pid=2796917)[0;0m [rank2]:W1201 12:05:02.833000 2796917 torch/_inductor/codegen/triton_combo_kernel.py:97] [0/0] ComboKernels: 1 long reduction nodes are separated
+[1;36m(Worker_TP7_EP7 pid=2796922)[0;0m [rank7]:W1201 12:05:02.834000 2796922 torch/_inductor/codegen/triton_combo_kernel.py:97] [0/0] ComboKernels: 1 long reduction nodes are separated
+[1;36m(Worker_TP6_EP6 pid=2796921)[0;0m [rank6]:W1201 12:05:03.028000 2796921 torch/_inductor/codegen/triton_combo_kernel.py:97] [0/0] ComboKernels: 1 long reduction nodes are separated
