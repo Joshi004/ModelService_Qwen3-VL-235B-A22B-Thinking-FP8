@@ -71,3 +71,5 @@ echo -e "${YELLOW}To stop it manually: lsof -ti:8080 | xargs kill -9${NC}"
 
 
 
+
+
