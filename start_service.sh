@@ -218,7 +218,12 @@ vllm serve "$MODEL_PATH" \
   --enable-expert-parallel \
   --trust-remote-code \
   --max-num-seqs "$MAX_NUM_SEQS" \
+  --uvicorn-log-level info \
   2>&1 | tee /home/naresh/qwen3-vl-fp8-service/logs/service.log
+
+
+
+
 
 
 
