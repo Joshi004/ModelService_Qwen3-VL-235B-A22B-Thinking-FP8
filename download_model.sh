@@ -6,6 +6,15 @@
 # Exit on any error
 set -e
 
+# Resolve the directory this script lives in (the project root), regardless of
+# where it is called from or who the current user is.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Load configuration to get MODEL_PATH and other settings
+if [ -f "$SCRIPT_DIR/config.env" ]; then
+    source "$SCRIPT_DIR/config.env"
+fi
+
 # Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -18,7 +27,9 @@ echo ""
 
 # Model information
 MODEL_REPO="Qwen/Qwen3-VL-235B-A22B-Thinking-FP8"
-LOCAL_DIR="/home/naresh/models/qwen3-vl-235b-thinking-fp8"
+# LOCAL_DIR: use MODEL_PATH from config.env if set, otherwise fall back to the
+# recommended data disk location. Override by setting MODEL_PATH before running.
+LOCAL_DIR="${MODEL_PATH:-/mnt/hf-cache/models/qwen3-vl-235b-thinking-fp8}"
 
 echo -e "${YELLOW}Model Information:${NC}"
 echo "  Repository: $MODEL_REPO"
@@ -49,8 +60,15 @@ fi
 
 # Check disk space
 echo -e "${YELLOW}Checking disk space...${NC}"
-MODELS_DIR="/home/naresh/models"
-AVAILABLE_SPACE=$(df -BG "$MODELS_DIR" | tail -1 | awk '{print $4}' | sed 's/G//')
+# Derive the parent models directory from LOCAL_DIR dynamically
+MODELS_DIR="$(dirname "$LOCAL_DIR")"
+# Walk up to the first existing ancestor directory for the df check
+# (MODELS_DIR may not exist yet if this is a fresh setup)
+_DF_DIR="$MODELS_DIR"
+while [ ! -d "$_DF_DIR" ] && [ "$_DF_DIR" != "/" ]; do
+    _DF_DIR="$(dirname "$_DF_DIR")"
+done
+AVAILABLE_SPACE=$(df -BG "$_DF_DIR" | tail -1 | awk '{print $4}' | sed 's/G//')
 REQUIRED_SPACE=250  # ~240 GB + some buffer
 
 if [ "$AVAILABLE_SPACE" -lt "$REQUIRED_SPACE" ]; then

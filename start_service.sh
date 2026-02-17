@@ -6,6 +6,10 @@
 # Exit on any error
 set -e
 
+# Resolve the directory this script lives in (the project root), regardless of
+# where it is called from or who the current user is.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -15,11 +19,11 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}Starting Qwen3-VL-235B-A22B-Thinking-FP8 vLLM Service...${NC}"
 
 # Load configuration
-if [ -f "/home/naresh/qwen3-vl-fp8-service/config.env" ]; then
-    source /home/naresh/qwen3-vl-fp8-service/config.env
+if [ -f "$SCRIPT_DIR/config.env" ]; then
+    source "$SCRIPT_DIR/config.env"
     echo -e "${YELLOW}Loaded configuration from config.env${NC}"
 else
-    echo -e "${RED}Error: config.env not found${NC}"
+    echo -e "${RED}Error: config.env not found at $SCRIPT_DIR/config.env${NC}"
     exit 1
 fi
 
@@ -31,7 +35,7 @@ echo -e "${YELLOW}Using vLLM 0.11.0 with V1 engine (default and only option)${NC
 # Note: PYTORCH_CUDA_ALLOC_CONF and CUDA paths are set from config.env
 
 # Media server configuration - serves both videos/ and audios/ subdirectories
-MEDIA_DIR="/home/naresh/datasets"
+# MEDIA_DIR is set in config.env (defaults to $HOME/datasets)
 MEDIA_PORT=8080
 
 # Check if port 8080 is already in use
@@ -60,7 +64,7 @@ else
     echo "  Audio URLs: http://localhost:$MEDIA_PORT/audios/<filename>"
     
     # Return to service directory
-    cd /home/naresh/qwen3-vl-fp8-service
+    cd "$SCRIPT_DIR"
     
     # Give the HTTP server a moment to start and verify it's running
     sleep 3
@@ -80,7 +84,8 @@ fi
 echo ""
 
 # Activate virtual environment
-source /home/naresh/venvs/qwen3-vl-fp8-service/bin/activate
+# VENV_DIR is set in config.env (defaults to $HOME/venvs/qwen3-vl-fp8)
+source "$VENV_DIR/bin/activate"
 
 echo -e "${YELLOW}Virtual environment activated${NC}"
 
@@ -97,7 +102,8 @@ echo -e "${GREEN}Detected $GPU_COUNT GPU(s)${NC}"
 if [ "$GPU_COUNT" -lt "$TENSOR_PARALLEL_SIZE" ]; then
     echo -e "${RED}Error: Requested $TENSOR_PARALLEL_SIZE GPUs but only $GPU_COUNT available${NC}"
     echo -e "${YELLOW}This model requires 8x H100 GPUs for optimal performance (236B parameters, FP8)${NC}"
-    echo -e "${YELLOW}Allocate GPUs using: salloc -p p_naresh --job-name=qwen-vl-fp8 --gres=gpu:8 --mem=320G --cpus-per-task=32 --time=24:00:00${NC}"
+    echo -e "${YELLOW}Ensure all GPUs are available and not in use by other processes.${NC}"
+    echo -e "${YELLOW}Check GPU status with: nvidia-smi${NC}"
     exit 1
 fi
 
@@ -169,7 +175,7 @@ fi
 echo -e "${GREEN}Model found at: $MODEL_PATH${NC}"
 
 # Create logs directory if it doesn't exist
-mkdir -p /home/naresh/qwen3-vl-fp8-service/logs
+mkdir -p "$SCRIPT_DIR/logs"
 
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${GREEN}Service Configuration${NC}"
@@ -204,7 +210,7 @@ echo -e "${GREEN}Starting vLLM Server...${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 echo -e "${YELLOW}📍 Service URL: http://localhost:$PORT${NC}"
-echo -e "${YELLOW}📄 Logs: /home/naresh/qwen3-vl-fp8-service/logs/service.log${NC}"
+echo -e "${YELLOW}📄 Logs: $SCRIPT_DIR/logs/service.log${NC}"
 echo -e "${YELLOW}⏱️  Model loading typically takes 5-10 minutes...${NC}"
 echo ""
 
@@ -219,7 +225,7 @@ vllm serve "$MODEL_PATH" \
   --trust-remote-code \
   --max-num-seqs "$MAX_NUM_SEQS" \
   --uvicorn-log-level info \
-  2>&1 | tee /home/naresh/qwen3-vl-fp8-service/logs/service.log
+  2>&1 | tee "$SCRIPT_DIR/logs/service.log"
 
 
 

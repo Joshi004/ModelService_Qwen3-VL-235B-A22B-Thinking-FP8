@@ -39,29 +39,22 @@ The FP8 quantized version offers significant advantages:
   - *Minimum: 4x H100 80GB (320GB) with reduced settings*
 - **Memory**: 320GB system RAM (recommended)
 - **Storage**: ~250GB for model weights
-- **CUDA**: Version 12.9 or compatible
+- **CUDA**: Version 12.4 or later (12.9 also works; update `CUDA_HOME` in `config.env` to match your installation)
 
 ## Quick Start
 
 ### 1. Download the Model
 
 ```bash
-cd /home/naresh/qwen3-vl-fp8-service
+cd /path/to/ModelService_Qwen3-VL-235B-A22B-Thinking-FP8
 ./download_model.sh
 ```
 
-This will download ~240GB of FP8 quantized model weights from Hugging Face.
+This will download ~240GB of FP8 quantized model weights from Hugging Face to the path configured in `config.env` (`MODEL_PATH`, defaults to `/mnt/hf-cache/models/qwen3-vl-235b-thinking-fp8`).
 
-### 2. Allocate SLURM Resources
-
-```bash
-salloc -p p_naresh --job-name=qwen-vl-fp8 --gres=gpu:8 --mem=320G --cpus-per-task=32 --time=24:00:00
-```
-
-### 3. Start the Service
+### 2. Start the Service
 
 ```bash
-cd /home/naresh/qwen3-vl-fp8-service
 ./start_service.sh
 ```
 
@@ -322,8 +315,8 @@ TOP_K=50
 # Check if service is running
 lsof -i :8010
 
-# View logs
-tail -f /home/naresh/qwen3-vl-fp8-service/logs/service.log
+# View logs (from the project root directory)
+tail -f logs/service.log
 
 # Monitor GPU usage
 watch -n 1 nvidia-smi
@@ -344,9 +337,13 @@ Expected memory usage per GPU with FP8:
 
 **Issue**: `Error: Requested 8 GPUs but only X available`
 
-**Solution**: Ensure you're in a SLURM allocation with 8 GPUs:
+**Solution**: Ensure all 8 GPUs are free and not in use by other processes:
 ```bash
-salloc -p p_naresh --job-name=qwen-vl-fp8 --gres=gpu:8 --mem=320G --cpus-per-task=32 --time=24:00:00
+# Check current GPU usage
+nvidia-smi
+
+# Check for processes using GPUs
+fuser /dev/nvidia*
 ```
 
 ### Out of Memory Errors
@@ -389,9 +386,9 @@ lsof -ti:8010 | xargs kill -9
 
 ### Model Not Found
 
-**Issue**: `Error: Model not found at /home/naresh/models/qwen3-vl-235b-thinking-fp8`
+**Issue**: `Error: Model not found at /mnt/hf-cache/models/qwen3-vl-235b-thinking-fp8`
 
-**Solution**: Download the model:
+**Solution**: Download the model (path is configured by `MODEL_PATH` in `config.env`):
 ```bash
 ./download_model.sh
 ```
@@ -520,7 +517,6 @@ For issues or questions:
 1. Check the logs: `tail -f logs/service.log`
 2. Review this README
 3. Check GPU status: `nvidia-smi`
-4. Verify SLURM allocation: `squeue`
 
 ## License
 
