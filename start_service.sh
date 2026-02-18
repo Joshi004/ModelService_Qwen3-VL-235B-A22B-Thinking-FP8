@@ -34,66 +34,42 @@ echo -e "${YELLOW}Using vLLM 0.11.0 with V1 engine (default and only option)${NC
 
 # Note: PYTORCH_CUDA_ALLOC_CONF and CUDA paths are set from config.env
 
-# Media server configuration - serves both videos/ and audios/ subdirectories
-# MEDIA_DIR is set in config.env (defaults to $HOME/datasets)
-MEDIA_PORT=8080
-
-# Check if port 8080 is already in use
-if lsof -Pi :$MEDIA_PORT -sTCP:LISTEN -t >/dev/null 2>&1 ; then
-    echo -e "${YELLOW}HTTP server already running on port $MEDIA_PORT - reusing existing server${NC}"
-    echo "  Media files accessible at: http://localhost:$MEDIA_PORT/"
-else
-    echo -e "${GREEN}Starting HTTP server for media files...${NC}"
-    echo "  Directory: $MEDIA_DIR"
-    echo "  Port: $MEDIA_PORT"
-    echo "  Serving: videos/, audios/, and other subdirectories"
-    
-    # Check if media directory exists
-    if [ ! -d "$MEDIA_DIR" ]; then
-        echo -e "${YELLOW}Warning: Directory $MEDIA_DIR does not exist. Creating it...${NC}"
-        mkdir -p "$MEDIA_DIR"
-    fi
-    
-    # Start Python HTTP server in background with nohup for proper detachment
-    cd "$MEDIA_DIR"
-    nohup python3 -m http.server $MEDIA_PORT > /tmp/media_server.log 2>&1 &
-    MEDIA_SERVER_PID=$!
-    echo $MEDIA_SERVER_PID > /tmp/media_server.pid
-    echo -e "${GREEN}HTTP server started with PID: $MEDIA_SERVER_PID${NC}"
-    echo "  Video URLs: http://localhost:$MEDIA_PORT/videos/<filename>"
-    echo "  Audio URLs: http://localhost:$MEDIA_PORT/audios/<filename>"
-    
-    # Return to service directory
-    cd "$SCRIPT_DIR"
-    
-    # Give the HTTP server a moment to start and verify it's running
-    sleep 3
-    
-    # Verify the server is actually running
-    if lsof -Pi :$MEDIA_PORT -sTCP:LISTEN -t >/dev/null 2>&1 ; then
-        echo -e "${GREEN}HTTP server verified running on port $MEDIA_PORT${NC}"
-    else
-        echo -e "${YELLOW}Warning: HTTP server may not have started properly. Check /tmp/media_server.log${NC}"
-        if [ -f /tmp/media_server.log ]; then
-            echo "  Last few lines of server log:"
-            tail -5 /tmp/media_server.log | sed 's/^/    /'
-        fi
-    fi
-fi
-
-echo ""
-
 # Activate virtual environment
 # VENV_DIR is set in config.env (defaults to $HOME/venvs/qwen3-vl-fp8)
 source "$VENV_DIR/bin/activate"
 
 echo -e "${YELLOW}Virtual environment activated${NC}"
 
+# Verify vllm is installed in the virtual environment
+if ! python -c "import vllm" 2>/dev/null; then
+    echo -e "${RED}Error: vllm not found in virtual environment at $VENV_DIR${NC}"
+    echo -e "${YELLOW}Install dependencies with: pip install -r $SCRIPT_DIR/requirements.txt${NC}"
+    exit 1
+fi
+
 # Check if CUDA is available
 if ! command -v nvidia-smi &> /dev/null; then
     echo -e "${RED}Error: nvidia-smi not found. CUDA may not be installed correctly.${NC}"
     exit 1
 fi
+
+# Check CUDA runtime version (determined by the host NVIDIA driver)
+CUDA_VERSION=$(nvidia-smi | grep -oP "CUDA Version: \K[0-9]+\.[0-9]+")
+CUDA_MAJOR=$(echo "$CUDA_VERSION" | cut -d. -f1)
+CUDA_MINOR=$(echo "$CUDA_VERSION" | cut -d. -f2)
+MIN_CUDA_MAJOR=12
+MIN_CUDA_MINOR=6
+
+if [ "$CUDA_MAJOR" -lt "$MIN_CUDA_MAJOR" ] || \
+   { [ "$CUDA_MAJOR" -eq "$MIN_CUDA_MAJOR" ] && [ "$CUDA_MINOR" -lt "$MIN_CUDA_MINOR" ]; }; then
+    echo -e "${RED}Error: CUDA $CUDA_VERSION detected. This model requires CUDA >= $MIN_CUDA_MAJOR.$MIN_CUDA_MINOR.${NC}"
+    echo -e "${RED}FP8 block scaling (FlashInfer CUTLASS MoE kernel) requires CUDA $MIN_CUDA_MAJOR.$MIN_CUDA_MINOR+.${NC}"
+    DRIVER_VERSION=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader -i 0)
+    echo -e "${YELLOW}Your NVIDIA driver: $DRIVER_VERSION (supports up to CUDA $CUDA_VERSION)${NC}"
+    echo -e "${YELLOW}Ask your DevOps team to upgrade the host NVIDIA driver to 560+ (for CUDA $MIN_CUDA_MAJOR.$MIN_CUDA_MINOR+).${NC}"
+    exit 1
+fi
+echo -e "${GREEN}CUDA $CUDA_VERSION detected (>= $MIN_CUDA_MAJOR.$MIN_CUDA_MINOR required) ✓${NC}"
 
 # Check GPU availability
 GPU_COUNT=$(nvidia-smi --list-gpus | wc -l)
@@ -129,7 +105,9 @@ done
 # Calculate total VRAM
 TOTAL_VRAM=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits -i 0 | head -1)
 TOTAL_VRAM_ALL=$((TOTAL_VRAM * TENSOR_PARALLEL_SIZE))
-USABLE_VRAM=$(echo "scale=0; $TOTAL_VRAM_ALL * $GPU_MEMORY_UTIL / 1" | bc)
+# Convert GPU_MEMORY_UTIL float (e.g. 0.90) to integer percentage using awk (no bc needed)
+GPU_MEM_PCT=$(awk -v v="$GPU_MEMORY_UTIL" 'BEGIN {printf "%.0f", v * 100}')
+USABLE_VRAM=$((TOTAL_VRAM_ALL * GPU_MEM_PCT / 100))
 
 echo ""
 echo -e "${YELLOW}Total VRAM across $TENSOR_PARALLEL_SIZE GPUs: $TOTAL_VRAM_ALL MiB (~$((TOTAL_VRAM_ALL / 1024)) GB)${NC}"
@@ -194,7 +172,7 @@ echo "  vLLM Version: 0.11.0 (V1 engine auto-detected)"
 echo ""
 echo -e "${YELLOW}GPU Configuration:${NC}"
 echo "  Tensor Parallel Size: $TENSOR_PARALLEL_SIZE GPUs"
-echo "  GPU Memory Utilization: ${GPU_MEMORY_UTIL} ($(echo "scale=0; $TOTAL_VRAM * $GPU_MEMORY_UTIL / 1024 / 1" | bc) GB per GPU)"
+echo "  GPU Memory Utilization: ${GPU_MEMORY_UTIL} ($((TOTAL_VRAM * GPU_MEM_PCT / 100 / 1024)) GB per GPU)"
 echo ""
 echo -e "${YELLOW}Capacity Settings:${NC}"
 echo "  Max Model Length: $MAX_MODEL_LEN tokens"

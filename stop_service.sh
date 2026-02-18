@@ -58,9 +58,6 @@ echo -e "${YELLOW}Checking for orphaned vLLM processes...${NC}"
 pkill -f "vllm serve.*qwen3-vl-235b-thinking-fp8" && echo -e "${GREEN}Cleaned up orphaned processes${NC}" || echo -e "${GREEN}No orphaned processes found${NC}"
 
 echo -e "${GREEN}Shutdown complete${NC}"
-echo ""
-echo -e "${YELLOW}Note: HTTP server on port 8080 is shared and was not stopped.${NC}"
-echo -e "${YELLOW}To stop it manually: lsof -ti:8080 | xargs kill -9${NC}"
 
 
 

@@ -15,6 +15,15 @@ if [ -f "$SCRIPT_DIR/config.env" ]; then
     source "$SCRIPT_DIR/config.env"
 fi
 
+# Activate virtual environment so huggingface-cli is available
+if [ -f "$VENV_DIR/bin/activate" ]; then
+    source "$VENV_DIR/bin/activate"
+else
+    echo -e "\033[0;31mError: Virtual environment not found at $VENV_DIR\033[0m"
+    echo "Please create it first: python3 -m venv $VENV_DIR"
+    exit 1
+fi
+
 # Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -90,7 +99,17 @@ echo -e "${YELLOW}Progress will be shown below...${NC}"
 echo ""
 
 # Create directory if it doesn't exist
-mkdir -p "$LOCAL_DIR"
+# Use sudo if the parent directory is not writable by the current user
+PARENT_DIR="$(dirname "$LOCAL_DIR")"
+if [ ! -w "$PARENT_DIR" ] && [ ! -d "$PARENT_DIR" ]; then
+    echo -e "${YELLOW}Parent directory $PARENT_DIR requires elevated permissions. Running with sudo...${NC}"
+    sudo mkdir -p "$LOCAL_DIR" && sudo chown -R "$(whoami):$(whoami)" "$LOCAL_DIR"
+elif [ ! -w "$PARENT_DIR" ]; then
+    echo -e "${YELLOW}Directory $PARENT_DIR requires elevated permissions. Running with sudo...${NC}"
+    sudo mkdir -p "$LOCAL_DIR" && sudo chown -R "$(whoami):$(whoami)" "$LOCAL_DIR"
+else
+    mkdir -p "$LOCAL_DIR"
+fi
 
 # Download the model
 # Using huggingface-cli with resume support
