@@ -34,17 +34,30 @@ echo -e "${YELLOW}Using vLLM 0.11.0 with V1 engine (default and only option)${NC
 
 # Note: PYTORCH_CUDA_ALLOC_CONF and CUDA paths are set from config.env
 
-# Activate virtual environment
+# Activate virtual environment (auto-create and install deps if missing)
 # VENV_DIR is set in config.env (defaults to $HOME/venvs/qwen3-vl-fp8)
-source "$VENV_DIR/bin/activate"
+if [ ! -f "$VENV_DIR/bin/activate" ]; then
+    echo -e "${YELLOW}Virtual environment not found at $VENV_DIR${NC}"
+    echo -e "${YELLOW}Creating virtual environment...${NC}"
+    mkdir -p "$(dirname "$VENV_DIR")"
+    python3 -m venv "$VENV_DIR"
+    echo -e "${GREEN}Virtual environment created${NC}"
 
-echo -e "${YELLOW}Virtual environment activated${NC}"
+    source "$VENV_DIR/bin/activate"
 
-# Verify vllm is installed in the virtual environment
-if ! python -c "import vllm" 2>/dev/null; then
-    echo -e "${RED}Error: vllm not found in virtual environment at $VENV_DIR${NC}"
-    echo -e "${YELLOW}Install dependencies with: pip install -r $SCRIPT_DIR/requirements.txt${NC}"
-    exit 1
+    echo -e "${YELLOW}Installing dependencies from requirements.txt (this may take several minutes)...${NC}"
+    pip install -r "$SCRIPT_DIR/requirements.txt"
+    echo -e "${GREEN}Dependencies installed successfully${NC}"
+else
+    source "$VENV_DIR/bin/activate"
+    echo -e "${YELLOW}Virtual environment activated${NC}"
+
+    # Verify vllm is installed; if not, re-run the install (handles partial installs)
+    if ! python -c "import vllm" 2>/dev/null; then
+        echo -e "${YELLOW}vllm not found in existing venv — reinstalling dependencies...${NC}"
+        pip install -r "$SCRIPT_DIR/requirements.txt"
+        echo -e "${GREEN}Dependencies installed successfully${NC}"
+    fi
 fi
 
 # Check if CUDA is available
